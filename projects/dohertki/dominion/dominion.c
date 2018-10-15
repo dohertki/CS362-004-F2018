@@ -723,8 +723,8 @@ int _mine(int currentPlayer, int choice1, int choice2, int handPos, struct gameS
 	    {
 	      if (ptr_state->hand[currentPlayer][i] == j)
 	      {
-	        discardCard(i, currentPlayer, ptr_state, 0);			
-
+	        discardCard(handPos, currentPlayer, ptr_state, 0);			
+          break;
 	      }
 	}
 			
@@ -882,9 +882,6 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       _smithy(handPos, currentPlayer, state);
       return 0;
 
-    
-  
-		
     case village:
       _village(currentPlayer, handPos, state);  
       return 0;
