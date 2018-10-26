@@ -1,4 +1,4 @@
-CFLAGS= -Wall -fpic -coverage -lm -std=c99
+CFLAGS= -Wall -fpic -coverage -lm -g -std=c99
 
 rngs.o: rngs.h rngs.c
 	gcc -c rngs.c -g  $(CFLAGS)
@@ -30,9 +30,18 @@ runtests: testDrawCard
 	cat dominion.c.gcov >> unittestresult.out
 
 
-player: player.c interface.o
+player: player.c dominion.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)
 
+unitone: unittest1.c interface.o
+	gcc -o unitone unittest1.c -g dominion.o rngs.o $(CFLAGS)
+
+
+unittwo: unittest2.c interface.o
+	gcc -o unittwo unittest2.c -g dominion.o rngs.o $(CFLAGS)
+
+unitthree: unittest3.c interface.o
+	gcc -o unitthree unittest3.c -g dominion.o rngs.o $(CFLAGS)
 all: playdom player 
 
 clean:
