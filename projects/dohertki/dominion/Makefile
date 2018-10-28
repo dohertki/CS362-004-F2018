@@ -1,4 +1,4 @@
-CFLAGS= -Wall -fpic -coverage -lm -g -std=c99
+CFLAGS= -Wall -fpic -coverage -lm -std=c99
 
 rngs.o: rngs.h rngs.c
 	gcc -c rngs.c -g  $(CFLAGS)
@@ -29,19 +29,48 @@ runtests: testDrawCard
 	gcov dominion.c >> unittestresult.out
 	cat dominion.c.gcov >> unittestresult.out
 
+cardtest1: cardtest1.c interface.o
+	gcc -o cardtest1 cardtest1.c -g dominion.o rngs.o $(CFLAGS)
 
-player: player.c dominion.o
+cardtest2: cardtest2.c interface.o
+	gcc -o cardtest2 cardtest2.c -g dominion.o rngs.o $(CFLAGS)
+
+cardtest3: cardtest3.c interface.o
+	gcc -o cardtest3 cardtest3.c -g dominion.o rngs.o $(CFLAGS)
+
+cardtest4: cardtest4.c interface.o
+	gcc -o cardtest4 cardtest4.c -g dominion.o rngs.o $(CFLAGS)
+
+
+unittestresults: cardtest1 cardtest2 cardtest3 cardtest4
+
+	./cardtest1 >> unittestresults.out
+	gcov -b cardtest1.c >> unittestresults.out
+	cat cardtest1.c.gcov >> unittestresults.out
+	
+	
+	./cardtest2 >> unittestresults.out
+	gcov -b cardtest2.c >> unittestresults.out
+	cat cardtest2.c.gcov >> unittestresults.out
+	
+	
+	
+	./cardtest3 >> unittestresults.out
+	gcov -b cardtest3.c >> unittestresults.out
+	cat cardtest3.c.gcov >> unittestresults.out
+
+	./cardtest4 >> unittestresults.out
+	gcov -b cardtest4.c >> unittestresults.out
+	cat cardtest4.c.gcov >> unittestresults.out
+	
+
+
+cheat: cheat.c interface.o
+	gcc -o cheat cheat.c -g dominion.o rngs.o $(CFLAGS)
+
+player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)
 
-unitone: unittest1.c interface.o
-	gcc -o unitone unittest1.c -g dominion.o rngs.o $(CFLAGS)
-
-
-unittwo: unittest2.c interface.o
-	gcc -o unittwo unittest2.c -g dominion.o rngs.o $(CFLAGS)
-
-unitthree: unittest3.c interface.o
-	gcc -o unitthree unittest3.c -g dominion.o rngs.o $(CFLAGS)
 all: playdom player 
 
 clean:
