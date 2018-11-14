@@ -1,0 +1,121 @@
+        -:    0:Source:cardtest2.c
+        -:    0:Graph:cardtest2.gcno
+        -:    0:Data:cardtest2.gcda
+        -:    0:Runs:5
+        -:    0:Programs:1
+        -:    1://unittest1.c
+        -:    2:#include "dominion.h"
+        -:    3:#include "dominion_helpers.h"
+        -:    4:#include "rngs.h"
+        -:    5:#include <stdio.h>
+        -:    6:#include <math.h>
+        -:    7:#include <stdlib.h>
+        -:    8:
+        -:    9:
+        -:   10: /*
+        -:   11: 
+        -:   12: The Great Hall
+        -:   13: +1 Card
+        -:   14: +1 Action
+        -:   15:  Action-Victory (+1 )
+        -:   16: */
+        -:   17: 
+        -:   18: 
+        -:   19: 
+        -:   20: struct gameState state_chk ={
+        -:   21:        2,                    //Number of players
+        -:   22:        {10,8,8,8,46,40,30},  //suplyCount[curse,estate,duchy,province,]
+        -:   23:        {0,0}, //embargoTokens
+        -:   24:        0,     //outpostPlayed
+        -:   25:        0,     //Oupost Turn
+        -:   26:        1,     // whoseTurn;
+        -:   27:        0,     //int phase;
+        -:   28:        1,     //int numActions; * Starts at 1 each turn */
+        -:   29:        0,     //int coins; * Use as you see fit! */
+        -:   30:        0,     //int numBuys; * Starts at 1 each turn */
+        -:   31:        {{0,1,2},{4,16,6}},    //hand[MAX_PLAYERS][MAX_HAND];
+        -:   32:        {3,3},  // handCount[MAX_PLAYERS];
+        -:   33:        {{0,1,2,3,4,5,6,7,10,25},{0,1,2,3,4,5,6,7,10,25}},    //deck[MAX_PLAYERS][MAX_DECK];
+        -:   34:        {10,10},              //deckCount[MAX_PLAYERS];
+        -:   35:        {{0,0},{1,0}},    //discard[MAX_PLAYERS][MAX_DECK];
+        -:   36:        {0},    //discardCount[MAX_PLAYERS];
+        -:   37:        {0},    // playedCards[MAX_DECK];
+        -:   38:         0     // playedCardCount;
+        -:   39:    };
+        -:   40:
+function main called 5 returned 100% blocks executed 79%
+        5:   41:int main(){
+        -:   42:
+        -:   43:    int i;
+        5:   44:    int coins = 0;
+        -:   45:    int in_actions;
+        -:   46:    int in_deck_count;
+        -:   47:    int in_hand_count;
+        -:   48:    int out_deck_count;
+        -:   49:    int out_hand_count;
+        5:   50:    int flag_card = 0;
+        5:   51:    int draw_one = 0;
+        5:   52:    int player = 1;
+        5:   53:    in_actions = state_chk.numActions;
+        -:   54:
+        -:   55:
+        -:   56:
+        5:   57:    cardEffect(16, -1, -1, -1, &state_chk, 1 , &coins);
+call    0 returned 100%
+        -:   58:
+       20:   59:    for( i = 0; i < state_chk.handCount[player] ; i++){
+branch  0 taken 75%
+branch  1 taken 25% (fallthrough)
+       15:   60:        if(state_chk.hand[player][i] == 16){
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:   61:            flag_card = 1;
+        -:   62:        }
+       15:   63:        if(state_chk.hand[player][i] == 25){
+branch  0 taken 33% (fallthrough)
+branch  1 taken 67%
+        5:   64:            draw_one = 1;
+        -:   65:        }    
+        -:   66:        
+        -:   67:    }
+        -:   68:
+        -:   69:
+        5:   70:    if(flag_card != 1 ){
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        5:   71:        printf("PASSED: Great Hall dropped from hand \n");    
+call    0 returned 100%
+        -:   72:    }else{
+    #####:   73:        printf("FAILED: Great Hall failed to be discarded\n" );    
+call    0 never executed
+        -:   74:    }
+        -:   75:
+        5:   76:    if(draw_one == 1 ){
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        5:   77:        printf("PASSED: First card drawn to hand\n");    
+call    0 returned 100%
+        -:   78:    }else{
+    #####:   79:        printf("FAILED: First card failed to be drawn\n");    
+call    0 never executed
+        -:   80:    }
+        -:   81:  
+        5:   82:    if(in_actions == state_chk.numActions -1){
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        5:   83:        printf("PASSED: Player has one additional action\n");
+call    0 returned 100%
+        -:   84:    }else{
+    #####:   85:        printf("FAILED: Player failed to get one additional action\n");
+call    0 never executed
+        -:   86:    }   
+        -:   87:
+        -:   88:
+        -:   89:
+        -:   90:
+        -:   91:
+        -:   92:
+        -:   93:
+        -:   94:
+        5:   95:    return 0;
+        -:   96:}

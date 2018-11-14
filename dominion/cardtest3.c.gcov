@@ -1,0 +1,165 @@
+        -:    0:Source:cardtest3.c
+        -:    0:Graph:cardtest3.gcno
+        -:    0:Data:cardtest3.gcda
+        -:    0:Runs:6
+        -:    0:Programs:1
+        -:    1:
+        -:    2:
+        -:    3:
+        -:    4:
+        -:    5://unittest1.c
+        -:    6:#include "dominion.h"
+        -:    7:#include "dominion_helpers.h"
+        -:    8:#include "rngs.h"
+        -:    9:#include <stdio.h>
+        -:   10:#include <math.h>
+        -:   11:#include <stdlib.h>
+        -:   12:
+        -:   13:
+        -:   14: /*
+        -:   15: 
+        -:   16: The Adeventurer
+        -:   17: Reveal cards from your deck until you reveal 2 Treasure cards.
+        -:   18: Put those Treasure cards in your hand and discard the other revealed cards.
+        -:   19:  
+        -:   20: */
+        -:   21: 
+        -:   22: 
+        -:   23: struct gameState state_chk ={
+        -:   24:        2,                    //Number of players
+        -:   25:        {10,8,8,8,46,40,30},  //suplyCount[curse,estate,duchy,province,]
+        -:   26:        {0,0}, //embargoTokens
+        -:   27:        0,     //outpostPlayed
+        -:   28:        0,     //Oupost Turn
+        -:   29:        1,     // whoseTurn;
+        -:   30:        0,     //int phase;
+        -:   31:        1,     //int numActions; * Starts at 1 each turn */
+        -:   32:        0,     //int coins; * Use as you see fit! */
+        -:   33:        0,     //int numBuys; * Starts at 1 each turn */
+        -:   34:        {{0,7,2},{4,7,6}},    //hand[MAX_PLAYERS][MAX_HAND];
+        -:   35:        {3,3},  // handCount[MAX_PLAYERS];
+        -:   36:        {{0,1,2,3,4,5,6,7,10,25},{0,1,2,3,4,5,6,7,10,25}},    //deck[MAX_PLAYERS][MAX_DECK];
+        -:   37:        {0,10},              //deckCount[MAX_PLAYERS];
+        -:   38:        {{4,4,13,1,14},{4,4,13,1,14}},    //discard[MAX_PLAYERS][MAX_DECK];
+        -:   39:        {0},    //discardCount[MAX_PLAYERS];
+        -:   40:        {0},    // playedCards[MAX_DECK];
+        -:   41:         0     // playedCardCount;
+        -:   42:    };
+        -:   43:
+function main called 6 returned 100% blocks executed 85%
+        6:   44:int main(){
+        -:   45:
+        -:   46:    int i, j;
+        6:   47:    int coins = 0;
+        -:   48:    int in_deck_count;
+        -:   49:    int in_hand_count;
+        -:   50:    int out_deck_count;
+        -:   51:    int out_hand_count;
+        6:   52:    int match =0;
+        6:   53:    int mismatch =0;
+        -:   54:    int player;
+        -:   55:    
+        -:   56:    //Get game status before card played    
+        6:   57:    player = state_chk.whoseTurn;
+        6:   58:    in_hand_count = state_chk.handCount[player];
+        6:   59:    in_deck_count = state_chk.deckCount[player];
+        6:   60:    int pile[][MAX_DECK] =  {{0,1,2,3,4,5,6,7,10,25},{4,4,13,1,14}};
+        6:   61:    int size_y = 10;	
+        6:   62:    int size_x= 10;
+        -:   63:        
+        -:   64:   
+        6:   65:    cardEffect(7, -1, -1, -1, &state_chk,1 , &coins);
+call    0 returned 100%
+        -:   66:
+        -:   67:
+        -:   68: //Get new game status
+        6:   69:    out_hand_count = state_chk.handCount[player];
+        6:   70:    out_deck_count = state_chk.deckCount[player];
+        -:   71:    
+        6:   72:    if(out_deck_count == in_deck_count - 3 ){
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:   73:        printf("PASSED: deck count before adventurer %d, deck count after adventurer %d\n", in_deck_count, out_deck_count);    
+call    0 never executed
+        -:   74:    }else{
+        6:   75:        printf("FAILED: deck count before adventurer %d, deck count after adventurer %d\n", in_deck_count, out_deck_count);    
+call    0 returned 100%
+        -:   76:        
+        -:   77:    }
+        -:   78:
+        6:   79:    out_hand_count = state_chk.handCount[player];
+        -:   80:
+        6:   81:    if(out_hand_count == in_hand_count + 2 ){
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        6:   82:        printf("PASSED: hand count before adventurer %d, hand count after adventurer %d\n", in_hand_count, out_hand_count);    
+call    0 returned 100%
+        -:   83:    }else{
+    #####:   84:        printf("FAILED: hand count before adventurer %d, hand count after adventurer %d\n", in_hand_count, out_hand_count);    
+call    0 never executed
+        -:   85:        
+        -:   86:    }
+        -:   87:
+        6:   88:    player = 0;
+        6:   89:    state_chk.whoseTurn = 0;
+        6:   90:    cardEffect(7, -1, -1, -1, &state_chk, 1 , &coins);
+call    0 returned 100%
+        -:   91:
+        6:   92:	printf("Deck size %d\n", size_x);
+call    0 returned 100%
+        -:   93:	
+       66:   94:	for(i = 0; i < size_x; i++){
+branch  0 taken 91%
+branch  1 taken 9% (fallthrough)
+      330:   95:		for(j =0; j < size_y; j++){
+branch  0 taken 100%
+branch  1 taken 0% (fallthrough)
+      330:   96:	        if(state_chk.deck[player][i] == pile[player][j]){  
+branch  0 taken 18% (fallthrough)
+branch  1 taken 82%
+       60:   97:	            printf(" %d: %d %d\n", i, state_chk.deck[player][i],  pile[player][j]);
+call    0 returned 100%
+       60:   98:	            state_chk.deck[player][i]  = -1;
+       60:   99:	            pile[player][j] =-1;
+       60:  100:	            match ++;            
+       60:  101:	            break ;
+        -:  102:	            
+        -:  103:	        }else{
+      270:  104:                mismatch++;
+        -:  105:
+        -:  106:            }
+        -:  107:		
+        -:  108:        
+        -:  109:			
+        -:  110:					}
+        -:  111:		
+        -:  112:	}
+        6:  113:    if(match == size_x){
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        6:  114:        printf("SUCCESS: the number of matches %d after shuffle\n", match);
+call    0 returned 100%
+        -:  115:    }else{
+    #####:  116:        printf("FAILED: deck missing cards after shuffle");
+call    0 never executed
+        -:  117:    }
+        6:  118:    if(mismatch > 0){
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        6:  119:        printf("SUCCESS: deck in new order following shuffle \n");
+call    0 returned 100%
+        -:  120:    }else{
+    #####:  121:        printf("FAILED: deck in same order after shuffle ");
+call    0 never executed
+        -:  122:    }    
+        -:  123:
+        -:  124:
+        -:  125:
+        -:  126:
+        -:  127:
+        6:  128:    return 0;
+        -:  129:}
+        -:  130:
+        -:  131:
+        -:  132:
+        -:  133:

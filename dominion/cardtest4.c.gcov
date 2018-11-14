@@ -1,0 +1,189 @@
+        -:    0:Source:cardtest4.c
+        -:    0:Graph:cardtest4.gcno
+        -:    0:Data:cardtest4.gcda
+        -:    0:Runs:6
+        -:    0:Programs:1
+        -:    1:
+        -:    2://cardtest4.c
+        -:    3:#include "dominion.h"
+        -:    4:#include "dominion_helpers.h"
+        -:    5:#include "rngs.h"
+        -:    6:#include <stdio.h>
+        -:    7:#include <math.h>
+        -:    8:#include <stdlib.h>
+        -:    9:
+        -:   10:
+        -:   11: /*
+        -:   12: 
+        -:   13: The Smithy
+        -:   14: Draw +3 cards
+        -:   15: "the player immediately draws X number of cards from his
+        -:   16:Deck. If there are not enough cards in his Deck, he draws as many as he
+        -:   17:can, shuffles the Discard pile to form a new Deck, and then draws the
+        -:   18:rest. If he still does not have enough cards left after forming a new Deck,
+        -:   19:he just draws as many as he can."
+        -:   20: */
+        -:   21: 
+        -:   22: 
+        -:   23: 
+        -:   24: struct gameState state_chk ={
+        -:   25:        2,                    //Number of players
+        -:   26:        {10,8,8,8,46,40,30},  //suplyCount[curse,estate,duchy,province,]
+        -:   27:        {0,0}, //embargoTokens
+        -:   28:        0,     //outpostPlayed
+        -:   29:        0,     //Oupost Turn
+        -:   30:        1,     // whoseTurn;
+        -:   31:        0,     //int phase;
+        -:   32:        1,     //int numActions; * Starts at 1 each turn */
+        -:   33:        0,     //int coins; * Use as you see fit! */
+        -:   34:        0,     //int numBuys; * Starts at 1 each turn */
+        -:   35:        {{0,1,2},{4,13,6}},    //hand[MAX_PLAYERS][MAX_HAND];
+        -:   36:        {3,3},  // handCount[MAX_PLAYERS];
+        -:   37:        {{0,1,2,3,4,5,6,7,10,25},{0,1,2,3,4,5,6,7,10,25}},    //deck[MAX_PLAYERS][MAX_DECK];
+        -:   38:        {10,10},              //deckCount[MAX_PLAYERS];
+        -:   39:        {{0,1,2,3,4,5,6,7,10,25},{1,0}},    //discard[MAX_PLAYERS][MAX_DECK];
+        -:   40:        {10,2},    //discardCount[MAX_PLAYERS];
+        -:   41:        {0},    // playedCards[MAX_DECK];
+        -:   42:         0     // playedCardCount;
+        -:   43:    };
+        -:   44:
+function main called 6 returned 100% blocks executed 78%
+        6:   45:int main(){
+        -:   46:
+        -:   47:    int i;
+        6:   48:    int coins = 0;
+        -:   49:    int in_deck_count;
+        -:   50:    int in_hand_count;
+        -:   51:    int out_deck_count;
+        -:   52:    int out_hand_count;
+        6:   53:    int flag_card = 0; 
+        6:   54:    int draw_one = 0;
+        6:   55:    int draw_two = 0;
+        6:   56:    int draw_three = 0;
+        -:   57:    int player;
+        -:   58:    
+        -:   59:    //Get game status before card played    
+        6:   60:    player = state_chk.whoseTurn;
+        6:   61:    in_hand_count = state_chk.handCount[player];
+        6:   62:    in_deck_count = state_chk.deckCount[player];
+        -:   63:
+        -:   64:
+        -:   65:
+        6:   66:    cardEffect(13, -1, -1, -1, &state_chk,1 , &coins);
+call    0 returned 100%
+        -:   67:
+        -:   68:    //Get new game status
+        6:   69:    out_hand_count = state_chk.handCount[player];
+        6:   70:    out_deck_count = state_chk.deckCount[player];
+        -:   71:    
+        6:   72:    if(out_deck_count == in_deck_count - 3 ){
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        6:   73:        printf("PASSED: deck count before smithy %d, deck count after smithy %d\n", in_deck_count, out_deck_count);    
+call    0 returned 100%
+        -:   74:    }else{
+    #####:   75:        printf("FAILED: deck count before smithy %d, deck count after smithy %d\n", in_deck_count, out_deck_count);    
+call    0 never executed
+        -:   76:        
+        -:   77:    }
+        -:   78:
+        6:   79:    out_hand_count = state_chk.handCount[player];
+        -:   80:
+        6:   81:    if(out_hand_count == in_hand_count + 2 ){
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        6:   82:        printf("PASSED: hand count before smithy %d, hand count after smithy %d\n", in_hand_count, out_hand_count);    
+call    0 returned 100%
+        -:   83:    }else{
+    #####:   84:        printf("FAILED: hand count before smithy %d, hand count after smithy %d\n", in_hand_count, out_hand_count);    
+call    0 never executed
+        -:   85:        
+        -:   86:    }
+        -:   87:
+       36:   88:    for( i = 0; i < state_chk.handCount[player] ; i++){
+branch  0 taken 83%
+branch  1 taken 17% (fallthrough)
+       30:   89:        if(state_chk.hand[player][i] == 13){
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:   90:            flag_card = 1;
+        -:   91:        }
+       30:   92:        if(state_chk.hand[player][i] == 7){
+branch  0 taken 20% (fallthrough)
+branch  1 taken 80%
+        6:   93:            draw_one = 1;
+        -:   94:        }    
+       30:   95:        if(state_chk.hand[player][i] == 10){
+branch  0 taken 20% (fallthrough)
+branch  1 taken 80%
+        6:   96:            draw_two = 1;
+        -:   97:        }    
+       30:   98:        if(state_chk.hand[player][i] == 25){
+branch  0 taken 20% (fallthrough)
+branch  1 taken 80%
+        6:   99:            draw_three = 1;
+        -:  100:        }
+        -:  101:    }
+        -:  102:
+        -:  103:
+        6:  104:    if(flag_card != 1 ){
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        6:  105:        printf("PASSED: smithy dropped from hand \n");    
+call    0 returned 100%
+        -:  106:    }else{
+    #####:  107:        printf("FAILED: smithy failed to be discarded\n" );    
+call    0 never executed
+        -:  108:    }
+        6:  109:    if(draw_one == 1 ){
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        6:  110:        printf("PASSED: First card drawn to hand\n");    
+call    0 returned 100%
+        -:  111:    }else{
+    #####:  112:        printf("FAILED: First card failed to be drawn\n");    
+call    0 never executed
+        -:  113:    }
+        6:  114:    if( draw_two == 1 ){
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        6:  115:        printf("PASSED: Second card drawn to hand \n");    
+call    0 returned 100%
+        -:  116:    }else{
+    #####:  117:        printf("FAILED: Second card Failed to be drawn\n");    
+call    0 never executed
+        -:  118:    }
+        6:  119:    if( draw_three == 1){
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        6:  120:        printf("PASSED: Third card drawn to hand \n");    
+call    0 returned 100%
+        -:  121:    }else{
+    #####:  122:        printf("FAILED: Third card failed to be drawn\n");    
+call    0 never executed
+        -:  123:    }
+        -:  124:
+        -:  125:
+        -:  126:
+        -:  127:
+        -:  128:
+        -:  129:
+        -:  130:
+        -:  131:
+        -:  132:
+        -:  133:
+        -:  134:
+        -:  135:
+        -:  136:
+        -:  137:
+        -:  138:
+        -:  139:
+        -:  140:
+        -:  141:
+        -:  142:
+        -:  143:
+        -:  144:
+        -:  145:
+        -:  146:
+        6:  147:    return 0;
+        -:  148:}
