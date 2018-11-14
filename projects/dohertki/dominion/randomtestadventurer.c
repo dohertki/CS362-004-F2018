@@ -4,12 +4,14 @@
 #include "dominion.h"
 #include "interface.h"
 #include "dominion_helpers.h"
+#include "randomtest.h"
 #include "rngs.h"
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
-
-
+#include <string.h>
+#include <time.h>
+#include <assert.h>
  /*
  
  The Adeventurer
@@ -19,26 +21,6 @@
  */
  
  
- struct gameState state_chk ={
-        2,                    //Number of players
-        {10,8,8,8,46,40,30},  //suplyCount[curse,estate,duchy,province,]
-        {0,0}, //embargoTokens
-        0,     //outpostPlayed
-        0,     //Oupost Turn
-        1,     // whoseTurn;
-        0,     //int phase;
-        1,     //int numActions; * Starts at 1 each turn */
-        0,     //int coins; * Use as you see fit! */
-        0,     //int numBuys; * Starts at 1 each turn */
-        {{0,7,2},{4,7,6}},    //hand[MAX_PLAYERS][MAX_HAND];
-        {3,3},  // handCount[MAX_PLAYERS];
-        {{0,1,2,3,4,5,6,7,10,25},{0,1,2,3,4,5,6,7,10,25}},    //deck[MAX_PLAYERS][MAX_DECK];
-        {0,10},              //deckCount[MAX_PLAYERS];
-        {{4,4,13,1,14},{4,4,13,1,14}},    //discard[MAX_PLAYERS][MAX_DECK];
-        {0},    //discardCount[MAX_PLAYERS];
-        {0},    // playedCards[MAX_DECK];
-         0     // playedCardCount;
-    };
 
 
 
@@ -50,19 +32,13 @@
 // gameState.handCount[currentPlayer]
 // gamestate.discoutn[currentPlayer]
 // 
-
-int copyPlayerState(int player, struct gameState *chk_state){
-    int checker = 4;
-
-    chk_state->handCount[checker] = chk_state->handCount[player];
-
-    return 0; 
-}; 
+int copyPlayerState(int player, int checker, struct gameState *chk_state);
+int randomizePiles(int player, int h_max, struct gameState *rnd_state);
 
 
 int main(){
 
-    int i, j;
+    int i, j, x;
     int coins = 0;
     int in_deck_count;
     int in_hand_count;
@@ -72,7 +48,7 @@ int main(){
     int mismatch =0;
     int player;
     int hand_coin = 0;
-    
+    srand(time(0));
     //Get game status before card played    
     player = state_chk.whoseTurn;
     in_hand_count = state_chk.handCount[player];
@@ -80,15 +56,20 @@ int main(){
     int pile[][MAX_DECK] =  {{0,1,2,3,4,5,6,7,10,25},{4,4,13,1,14}};
     int size_y = 10;	
     int size_x= 10;
-     copyPlayerState(player, &state_chk);   
+    
+   
     hand_coin = countHandCoins(player, &state_chk);
-    printf("Coin value of hand before card draw %d\n", hand_coin);
-
-    cardEffect(7, -1, -1, -1, &state_chk,1 , &coins);
-
-    hand_coin = countHandCoins(player, &state_chk);
-    printf("Coin value of hand before card draw %d\n", hand_coin);
-
+     for( x = 0; x < 10000; x++){
+    //    printf("Coin value of hand before card draw %d\n", hand_coin);
+    
+        randomizePiles(1,10, &state_chk);
+        copyPlayerState(player, 3, &state_chk);  
+      cardEffect(14, -1, -1, -1, &state_chk,1 , &coins);
+     
+    hand_coin = countHandCoins(1, &state_chk);
+    printf("Coin value of hand before after draw %d\n", hand_coin);
+    }
+    printf("hello\n");
  //Get new game status
     out_hand_count = state_chk.handCount[player];
     out_deck_count = state_chk.deckCount[player];
@@ -146,9 +127,61 @@ int main(){
     }    
 
 
-    printf("hand count %d\n", state_chk.handCount[4]);
+    printf("hand count %d\n", state_chk.handCount[3]);
 
 
     return 0;
 }
 
+int copyPlayerState(int player, int checker, struct gameState *chk_state){
+   
+    int i;
+
+    chk_state->handCount[checker] = chk_state->handCount[player];
+    chk_state->discardCount[checker] = chk_state->discardCount[player];
+    chk_state->deckCount[checker] = chk_state->deckCount[player];
+    for( i = 0; i< MAX_DECK; i++){
+        chk_state->hand[checker][i] = chk_state->hand[player][i];
+        chk_state->deck[checker][i] = chk_state->deck[player][i]; 
+        chk_state->discard[checker][i] = chk_state->discard[player][i];   
+    }
+
+//    memcpy((int*)chk_state->hand[checker][MAX_DECK] , (int*)chk_state->hand[player][MAX_DECK] , sizeof(chk_state->hand[player][MAX_DECK])); 
+    return 0; 
+}; 
+int randomizePiles(int player, int h_max, struct gameState *rnd_state){
+    //Set the deck size
+    int i;
+    int deck_size = rand()%h_max;
+    int hand_size = 5;
+    int discard_size = h_max - deck_size;
+    int card;
+
+    rnd_state->handCount[player] = hand_size;
+    rnd_state->deckCount[player] = deck_size;
+    rnd_state->discardCount[player] = discard_size;
+
+
+    for( i = 0; i< deck_size; i++){
+        card = rand()%27;
+     //  assert(&(rnd_state->deck[player][i])!= NULL) 
+       //     printf("There is no room in deck storage %d\n", deck_size);
+        rnd_state->deck[player][i] = card;
+    }
+
+    for( i = 0; i< hand_size ; i++){
+        card = rand()%27;
+     //   assert(rnd_state->deck[player][i]!= NULL)
+       //     printf("There is no room in hand storage %d \n", hand_size);
+        rnd_state->hand[player][i] = card;
+    }
+
+    for( i = 0; i< discard_size; i++){
+        card = rand()%27; 
+     //   assert(rnd_state->deck[player][i]!= NULL)
+       //     printf("There is no room in discard storage %d \n", discard_size);
+        rnd_state->discard[player][i] = card;   
+    }
+
+    return 0;
+}
