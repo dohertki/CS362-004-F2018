@@ -38,9 +38,11 @@
 //Choose random cards for deck, hand and discard piles
 int randomizePiles(int player, int h_max, struct gameState *rnd_state);
 
-
-
-
-
+//Save values 'player' into 'checker' player posistion
+int copyPlayerState(int player, int checker, struct gameState *chk_state);
+//Check if 'delta' additional actions added to game.
+void checkNewAction( int delta, struct gameState *act_state);
+//Check if drawCard() funcions correctly
+void checkDrawCard(int player, int checker, struct gameState *draw_state);
 
 #endif

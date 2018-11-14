@@ -32,7 +32,6 @@
 // gameState.handCount[currentPlayer]
 // gamestate.discoutn[currentPlayer]
 // 
-int copyPlayerState(int player, int checker, struct gameState *chk_state);
 
 
 
@@ -59,12 +58,12 @@ int main(){
     
    
     hand_coin = countHandCoins(player, &state_chk);
-     for( x = 0; x < 10000; x++){
+     for( x = 0; x < 100; x++){
     //    printf("Coin value of hand before card draw %d\n", hand_coin);
     
-        randomizePiles(1,10, &state_chk);
+        randomizePiles(1,100, &state_chk);
         copyPlayerState(player, 3, &state_chk);  
-      cardEffect(14, -1, -1, -1, &state_chk,1 , &coins);
+        cardEffect(7, -1, -1, -1, &state_chk,1 , &coins);
      
     hand_coin = countHandCoins(1, &state_chk);
     printf("Coin value of hand before after draw %d\n", hand_coin);
@@ -133,21 +132,6 @@ int main(){
     return 0;
 }
 
-int copyPlayerState(int player, int checker, struct gameState *chk_state){
-   
-    int i;
 
-    chk_state->handCount[checker] = chk_state->handCount[player];
-    chk_state->discardCount[checker] = chk_state->discardCount[player];
-    chk_state->deckCount[checker] = chk_state->deckCount[player];
-    for( i = 0; i< MAX_DECK; i++){
-        chk_state->hand[checker][i] = chk_state->hand[player][i];
-        chk_state->deck[checker][i] = chk_state->deck[player][i]; 
-        chk_state->discard[checker][i] = chk_state->discard[player][i];   
-    }
-
-//    memcpy((int*)chk_state->hand[checker][MAX_DECK] , (int*)chk_state->hand[player][MAX_DECK] , sizeof(chk_state->hand[player][MAX_DECK])); 
-    return 0; 
-}; 
 
 
