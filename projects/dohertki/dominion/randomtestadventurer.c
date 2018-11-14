@@ -2,6 +2,7 @@
 
 
 #include "dominion.h"
+#include "interface.h"
 #include "dominion_helpers.h"
 #include "rngs.h"
 #include <stdio.h>
@@ -40,12 +41,7 @@
     };
 
 
-void changeGameState(gameState *state){
 
-
-
-
-}
 
 // handPos
 // currentPlayer
@@ -55,7 +51,13 @@ void changeGameState(gameState *state){
 // gamestate.discoutn[currentPlayer]
 // 
 
+int copyPlayerState(int player, struct gameState *chk_state){
+    int checker = 4;
 
+    chk_state->handCount[checker] = chk_state->handCount[player];
+
+    return 0; 
+}; 
 
 
 int main(){
@@ -69,6 +71,7 @@ int main(){
     int match =0;
     int mismatch =0;
     int player;
+    int hand_coin = 0;
     
     //Get game status before card played    
     player = state_chk.whoseTurn;
@@ -77,10 +80,14 @@ int main(){
     int pile[][MAX_DECK] =  {{0,1,2,3,4,5,6,7,10,25},{4,4,13,1,14}};
     int size_y = 10;	
     int size_x= 10;
-        
-   
+     copyPlayerState(player, &state_chk);   
+    hand_coin = countHandCoins(player, &state_chk);
+    printf("Coin value of hand before card draw %d\n", hand_coin);
+
     cardEffect(7, -1, -1, -1, &state_chk,1 , &coins);
 
+    hand_coin = countHandCoins(player, &state_chk);
+    printf("Coin value of hand before card draw %d\n", hand_coin);
 
  //Get new game status
     out_hand_count = state_chk.handCount[player];
@@ -139,7 +146,7 @@ int main(){
     }    
 
 
-
+    printf("hand count %d\n", state_chk.handCount[4]);
 
 
     return 0;
