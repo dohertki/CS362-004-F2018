@@ -104,10 +104,11 @@ all: playdom player
 
 
 
-randomtestadventurer: randomtestadventurer.c dominion.o interface.o
+randomtestadventurer: randomtestadventurer.c dominion.o interface.o randomtest.h
 	gcc -o randomtestadventurer randomtestadventurer.c -g interface.o dominion.o rngs.o $(CFLAGS)
 
-
+randomtest.o: randomtest.h randomtest.h dominion.o 
+	gcc -c randomtest.c -g  $(CFLAGS)
 
 
 
