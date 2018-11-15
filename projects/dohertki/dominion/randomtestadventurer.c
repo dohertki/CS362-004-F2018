@@ -61,11 +61,14 @@ int main(){
      for( x = 0; x < 100; x++){
     //    printf("Coin value of hand before card draw %d\n", hand_coin);
     
-        randomizePiles(1,100, &state_chk);
+        randomizePiles(0,101, &state_chk);  
+        randomizePiles(1,101, &state_chk);
         copyPlayerState(player, 3, &state_chk);  
         cardEffect(7, -1, -1, -1, &state_chk,1 , &coins);
      
+        printf("Random Test # %d\n", x);
     hand_coin = countHandCoins(1, &state_chk);
+    
     printf("Coin value of hand before after draw %d\n", hand_coin);
     }
     printf("hello\n");
@@ -91,7 +94,7 @@ int main(){
 
     player = 0;
     state_chk.whoseTurn = 0;
-    cardEffect(7, -1, -1, -1, &state_chk, 1 , &coins);
+    cardEffect(7, -1, -1, -1, &state_chk, 4 , &coins);
 
 	printf("Deck size %d\n", size_x);
 	
@@ -117,12 +120,12 @@ int main(){
     if(match == size_x){
         printf("SUCCESS: the number of matches %d after shuffle\n", match);
     }else{
-        printf("FAILED: deck missing cards after shuffle");
+        printf("FAILED: deck missing cards after shuffle\n");
     }
     if(mismatch > 0){
         printf("SUCCESS: deck in new order following shuffle \n");
     }else{
-        printf("FAILED: deck in same order after shuffle ");
+        printf("FAILED: deck in same order after shuffle \n ");
     }    
 
 

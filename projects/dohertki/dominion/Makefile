@@ -131,9 +131,18 @@ randomresults: randomtestcard1  randomtestcard2 randomtestadventurer
 	cat randomtestadventurer.c.gcov >> randomresults.out
 
 gcovresults1: randomtestcard1
-	./randomtestcard1 &> randomresults
-	gcov -b dominion.c >> randomresults.out	
-	cat dominion.c.gcov >> randomresults.out
+	./randomtestcard1 &> randomresults1
+	gcov -b dominion.c >> randomresults1.out	
+	cat dominion.c.gcov >> randomresults1.out
+
+
+gcovresults_adv: randomtestadventurer
+	./randomtestadventurer &> randomresults_adv
+	gcov -b dominion.c >> randomresults_adv.out	
+	cat dominion.c.gcov >> randomresults_adv.out
+
+
+
 
 clean:
 	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno \
