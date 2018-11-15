@@ -136,6 +136,11 @@ gcovresults1: randomtestcard1
 	cat dominion.c.gcov >> randomresults1.out
 
 
+gcovresults2: randomtestcard2
+	./randomtestcard2 &> randomresults2
+	gcov -b dominion.c >> randomresults2.out	
+	cat dominion.c.gcov >> randomresults2.out
+
 gcovresults_adv: randomtestadventurer
 	./randomtestadventurer &> randomresults_adv
 	gcov -b dominion.c >> randomresults_adv.out	
