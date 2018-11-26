@@ -646,8 +646,10 @@ int getCost(int cardNumber)
 
 
 
-/**************************************************************************************/ 
-/**************************************************************************************/ 
+/************************************************************************************** 
+ BUG: You are going to get 4 cards for 4 copper which is a pretty good deal! 
+ Incorrect	<=	operation where a < should be.
+**************************************************************************************/ 
 void _smithy(int currentPlayer, int handPos, struct gameState *ptr_state)
 {
   int i;
@@ -660,8 +662,9 @@ void _smithy(int currentPlayer, int handPos, struct gameState *ptr_state)
   discardCard(handPos, currentPlayer, ptr_state, 0);
 }
 
-/**************************************************************************************/ 
-/**************************************************************************************/ 
+/**************************************************************************************
+Deck is mistakenly reshuffled when there is still a card remaining in the deck.
+**************************************************************************************/ 
 void _adventurer(int z, int currentPlayer, struct gameState *ptr_state){
    int cardDrawn;
    int temphand [MAX_HAND];
@@ -685,12 +688,11 @@ void _adventurer(int z, int currentPlayer, struct gameState *ptr_state){
 	  ptr_state->discard[currentPlayer][ptr_state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
 	  z=z-1;
   }
-}
 
 
 /************************************************************************************** 
+BUG: The wrong card is discarded from the hand
 **************************************************************************************/ 
-
 
 int _mine(int currentPlayer, int choice1, int choice2, int handPos, struct gameState *ptr_state){
      int i;
@@ -722,7 +724,7 @@ int _mine(int currentPlayer, int choice1, int choice2, int handPos, struct gameS
       for (i = 0; i < ptr_state->handCount[currentPlayer]; i++)
 	    {
 	      if (ptr_state->hand[currentPlayer][i] == j)
-	      {
+      {
 	        discardCard(handPos, currentPlayer, ptr_state, 0);			
           break;
 	      }
@@ -734,9 +736,8 @@ int _mine(int currentPlayer, int choice1, int choice2, int handPos, struct gameS
 
 
 /************************************************************************************** 
+BUG: change in the order of	the	actions	listed on the card face. 
 **************************************************************************************/ 
-
-
 
 void _village(int currentPlayer, int handPos, struct gameState *ptr_state){
  
@@ -751,8 +752,6 @@ void _village(int currentPlayer, int handPos, struct gameState *ptr_state){
 }
 
 
-/************************************************************************************** 
-**************************************************************************************/ 
 
 void _great_hall(int currentPlayer, int handPos, struct gameState *ptr_state){
       //+1 Card
