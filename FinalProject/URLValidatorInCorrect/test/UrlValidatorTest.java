@@ -83,7 +83,7 @@ public class UrlValidatorTest extends TestCase {
 	   
 	   //You can use this function to implement your First Partition testing	   
 	   
-	   System.out.print("First Partition Test- IP6 \n"); 
+	   System.out.println("First Partition Test- IP6 "); 
 	   
 	   
 	   //Check URLs that consist of literal IP6 addresses. Following are examples from  RFC 2732.
@@ -161,8 +161,7 @@ public class UrlValidatorTest extends TestCase {
 							 
 		};
 	   
-		// Reserved characters are not used in IP6 address.
-		
+	
 		String preamble = "http://";
 	   boolean check = true;
 	   // UrlValidator urlVal = new UrlValidator();
@@ -186,12 +185,67 @@ public class UrlValidatorTest extends TestCase {
  }   			
 	   
 
-     
+
+   public void testYourthirdPartition() {	   
+   
+	  //Test valid paths  
+	   System.out.print("Third Partition Test- Paths \n"); 
+   
+   
+       //Check paths of URL. Following are examples pulled from UrlValidatorTest() by Apache Software Foundation
+	   String [][] valAuth= { {"/test1", "true"},
+			   				  {"/t123", "true"},
+						      {"/$23", "true"},
+						      {"" , "true"},
+						      {"/?","true"},
+						      {"/test1/file","true"},
+						      {"/t123/file","true"},
+						      {"/$23/file","true"},
+						      {"/test1//file","true"},
+						      { "/..//file", "true"},
+						      {"/..", "false"},
+						      {"/../", "false"}, 
+						      { "/#", "false"},
+						      {"/../file", "false"},   
+						      {"/#/file" , "false"}						     
+						 
+	};
+   
+
+	   String preamble = "http://www.oregonstate.edu";
+	   boolean check = true;
+	   // UrlValidator urlVal = new UrlValidator();
+	   UrlValidator urlVal = new UrlValidator(UrlValidator.ALLOW_ALL_SCHEMES);
+   
+
+
+	   for(String[] row: valAuth) {
+
+	       try{
+	    	   check = Boolean.valueOf(row[1]);
+		       assertEquals(check, urlVal.isValid( preamble + row[0] ));
+	          System.out.println(". PASSED: " + preamble + row[0] );
+	       }catch(AssertionError e){
+	          System.out.println( "# FAILED: " + preamble + row[0] );
+	      
+	       }
+	   }
+	 
+   } 
 	   
 	   
 	   
 	   
 
+   
+   
+   
+   
+   
+   
+   
+   
+   
    //You need to create more test cases for your Partitions if you need to 
    
    public void testIsValid()
