@@ -3,7 +3,7 @@
 
  */
 
-import com.sun.tools.javac.util.Assert;
+//import com.sun.tools.javac.util.Assert;
 
 import junit.framework.TestCase;
 
@@ -23,9 +23,7 @@ public class UrlValidatorTest extends TestCase {
    }
 
    
-   
-   
-	   
+ 	   
    
 	   public void testManualTest()
 	   {
@@ -138,13 +136,56 @@ public class UrlValidatorTest extends TestCase {
   
    
    public void testYourSecondPartition(){
-		 //You can use this function to implement your Second Partition testing	   
+		 //Test valid authority  
+	   System.out.print("Second Partition Test- Authority \n"); 
 	   
-	  fail();
+	   
+	   //Check Authority of URL. Following are examples pulled from UrlValidatorTest() by Apache Software Foundation
+		String [][] valAuth= { {"www.google.com", "true"},
+							   {"google.com", "true"},
+							   {"google.au", "true"},
+							   {"255.255.255.255","true"},
+							   {"0.0.0.0","true"},
+							   {"255.com","true"},
+							   {"oregonstate.edu","true"},
+							   {"1.2.3.4.5", "false"},
+							   {"1.2.3", "false"}, 
+							   { "go.a", "false"},
+							   { "go.a1a", "false"},   
+							   { "go.1aa", "false"},
+							   {"aaa." , "false"},
+							   { ".aaa", "false"},
+							   { "aaa", "false"},
+							   {"" , "false"},
+							 
+							 
+		};
+	   
+		// Reserved characters are not used in IP6 address.
+		
+		String preamble = "http://";
+	   boolean check = true;
+	   // UrlValidator urlVal = new UrlValidator();
+	   UrlValidator urlVal = new UrlValidator(UrlValidator.ALLOW_ALL_SCHEMES);
 	   
 
+
+	for(String[] row: valAuth) {
+
+		       try{
+		    	   check = Boolean.valueOf(row[1]);
+			       assertEquals(check, urlVal.isValid( preamble + row[0] ));
+		          System.out.println(". PASSED: " + preamble + row[0] );
+		       }catch(AssertionError e){
+		          System.out.println( "# FAILED: " + preamble + row[0] );
+		      
+		       }
+	   }
+		 
+	 
+ }   			
 	   
-   }
+
      
 	   
 	   
