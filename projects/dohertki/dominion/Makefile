@@ -57,7 +57,7 @@ cardtest4: cardtest4.c interface.o
 
 
 
-cardtestresults: dominion.o cardtest1, cardtest2, cardtest3, cardtest4
+cardtestresults: cardtest1, cardtest2, cardtest3, cardtest4
 
 unittestresults: unittest1 unittest2 unittest3 unittest4 cardtest1 cardtest2 cardtest3 cardtest4
 
@@ -132,6 +132,11 @@ randomresults: randomtestcard1  randomtestcard2 randomtestadventurer
 
 gcovresults1: randomtestcard1
 	./randomtestcard1 &> randomresults
+	gcov -b dominion.c >> randomresults.out	
+	cat dominion.c.gcov >> randomresults.out
+
+gcovresults2: randomtestadventurer
+	./randomtestadventurer &> randomresults
 	gcov -b dominion.c >> randomresults.out	
 	cat dominion.c.gcov >> randomresults.out
 

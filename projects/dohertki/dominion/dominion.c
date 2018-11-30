@@ -655,7 +655,7 @@ int adventurerEffect(struct gameState *state, int currentPlayer){
     }
     drawCard(currentPlayer, state);
     cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn card.
-    if (cardDrawn == copper || cardDrawn == gold)  //FIXME  silver not counted
+    if (cardDrawn == copper || cardDrawn == gold)  
       drawntreasure++;
     else{
       temphand[z]=cardDrawn;
@@ -674,7 +674,7 @@ int adventurerEffect(struct gameState *state, int currentPlayer){
 int smithyEffect(struct gameState *state, int currentPlayer, int handPos){
   //+3 Cards
   int i;
-  for (i = 0; i < 4; i++) //FIXME 
+  for (i = 0; i < 4; i++) 
   {
     drawCard(currentPlayer, state);
   }
